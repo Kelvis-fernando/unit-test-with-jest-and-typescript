@@ -18,12 +18,24 @@ const createEnterpriseCustomer = (
 afterEach(() => jest.clearAllMocks());
 
 describe('IndividualCustomer', () => {
+  it('Should verify all the property', () => {
+    const sut = createIndividualCustomer(
+      'Kelvis',
+      'Fernando',
+      '111.222.333-44',
+    );
+    expect(sut).toHaveProperty('firstName', 'Kelvis');
+    expect(sut).toHaveProperty('lastName', 'Fernando');
+    expect(sut).toHaveProperty('cpf', '111.222.333-44');
+  });
+
   it('Should retur a string with first name and last name', () => {
     const sut = createIndividualCustomer(
       'Kelvis',
       'Fernando',
       '111.222.333-44',
     );
+
     expect(sut.getName()).toBe('Kelvis Fernando');
   });
 
@@ -38,6 +50,12 @@ describe('IndividualCustomer', () => {
 });
 
 describe('EnterpriseCustomer', () => {
+  it('Should verify the properties', () => {
+    const sut = createEnterpriseCustomer('Meteor', '1234');
+    expect(sut).toHaveProperty('name', 'Meteor');
+    expect(sut).toHaveProperty('cnpj', '1234');
+  });
+
   it('Should return the name enterprise', () => {
     const sut = createEnterpriseCustomer('Meteor', '1234');
     expect(sut.getName()).toBe('Meteor');
