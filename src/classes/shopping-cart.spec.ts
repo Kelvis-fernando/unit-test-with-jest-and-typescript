@@ -2,6 +2,8 @@ import { ShoppingCart } from './shopping-cart';
 import { Discount } from './discount';
 import { CartItem } from './interfaces/cart-item';
 
+afterEach(() => jest.clearAllMocks());
+
 const createSut = () => {
   const discountMock = createDiscountMock();
   const sut = new ShoppingCart(discountMock);
@@ -23,31 +25,31 @@ const createCartItem = (name: string, price: number) => {
 
 const createSutWithProducts = () => {
   const { sut, discountMock } = createSut();
-  const cartItem1 = createCartItem('Camiseta', 40);
-  const cartItem2 = createCartItem('Caneta', 1);
+  const cartItem1 = createCartItem('Camiseta', 20);
+  const cartItem2 = createCartItem('Bolsa', 40);
   sut.addItem(cartItem1);
   sut.addItem(cartItem2);
   return { sut, discountMock };
 };
 
 describe('ShoppingCart', () => {
-  it('should be an empty cart when no product is added', () => {
+  it('Should be an ampty cart when no product is added', () => {
     const { sut } = createSut();
     expect(sut.isEmpty()).toBe(true);
   });
 
-  it('should have 2 cart items', () => {
+  it('Should have 2 cart items', () => {
     const { sut } = createSutWithProducts();
     expect(sut.items.length).toBe(2);
   });
 
-  it('should test total and totalWithDiscount', () => {
+  it('Should teste total and total with discount', () => {
     const { sut } = createSutWithProducts();
-    expect(sut.total()).toBe(41);
-    expect(sut.totalWithDicount()).toBe(41);
+    expect(sut.total()).toBe(60);
+    expect(sut.totalWithDicount()).toBe(60);
   });
 
-  it('should add products and clear cart', () => {
+  it('Should add products and clear cart', () => {
     const { sut } = createSutWithProducts();
     expect(sut.items.length).toBe(2);
     sut.clear();
@@ -55,26 +57,23 @@ describe('ShoppingCart', () => {
     expect(sut.isEmpty()).toBe(true);
   });
 
-  it('should remove products', () => {
+  it('Should remove item', () => {
     const { sut } = createSutWithProducts();
-    expect(sut.items.length).toBe(2);
     sut.removeItem(1);
     expect(sut.items.length).toBe(1);
-    sut.removeItem(0);
-    expect(sut.isEmpty()).toBe(true);
   });
 
-  it('should call discount.calculate once when totalWithDiscount is called', () => {
+  it('Should call discount.calculate(price) when totalWithDiscount is called', () => {
     const { sut, discountMock } = createSutWithProducts();
     const discountMockSpy = jest.spyOn(discountMock, 'calculate');
     sut.totalWithDicount();
     expect(discountMockSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should call discount.calculate with total price when totalWithDiscount is called', () => {
+  it('Should call discount.calculate(price) with total price when totalWithDiscount is called', () => {
     const { sut, discountMock } = createSutWithProducts();
     const discountMockSpy = jest.spyOn(discountMock, 'calculate');
     sut.totalWithDicount();
-    expect(discountMockSpy).toHaveBeenCalledWith(sut.total());
+    expect(discountMockSpy).toBeCalledWith(sut.total());
   });
 });

@@ -29,7 +29,7 @@ describe('IndividualCustomer', () => {
     expect(sut).toHaveProperty('cpf', '111.222.333-44');
   });
 
-  it('Should retur a string with first name and last name', () => {
+  it('Should retur a string with first name and last name, and test the method getIDN', () => {
     const sut = createIndividualCustomer(
       'Kelvis',
       'Fernando',
@@ -37,14 +37,6 @@ describe('IndividualCustomer', () => {
     );
 
     expect(sut.getName()).toBe('Kelvis Fernando');
-  });
-
-  it('Should return a string with cpf', () => {
-    const sut = createIndividualCustomer(
-      'Kelvis',
-      'Fernando',
-      '111.222.333-44',
-    );
     expect(sut.getIDN()).toBe('111.222.333-44');
   });
 });
@@ -56,13 +48,9 @@ describe('EnterpriseCustomer', () => {
     expect(sut).toHaveProperty('cnpj', '1234');
   });
 
-  it('Should return the name enterprise', () => {
+  it('Should return the name enterprise, and test the method GetIdn', () => {
     const sut = createEnterpriseCustomer('Meteor', '1234');
     expect(sut.getName()).toBe('Meteor');
-  });
-
-  it('Should return cnpj of enterprise', () => {
-    const sut = createEnterpriseCustomer('Meteor', '1234');
     expect(sut.getIDN()).toBe('1234');
   });
 });
